@@ -43,7 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'rest_framework',
+
+    'rest_framework.authtoken',
     'dj_rest_auth',
+    
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -51,8 +54,8 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'django_filters',
 
-
-
+    'courses',
+    'users'
 
 
 ]
@@ -67,6 +70,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -155,3 +159,6 @@ REST_FRAMEWORK = {
 
 
 CORS_ALLOW_ALL_ORIGINS = True  
+
+
+AUTH_USER_MODEL = 'users.User'
