@@ -1,52 +1,60 @@
 import React, { useState, useEffect } from 'react';
-import { getCourses } from '../../services/api';
+import { getCourses, deleteCourse } from '../../services/api';
+import CourseList from '../../components/course/CourseList';
 
 function CourseListPage() {
-    const [courses, setCourses] = useState([]);
-    const [filters, setFilters] = useState({ title: '', category: '' });
+  const [courses, setCourses] = useState([]);
+  const [filters, setFilters] = useState({ title: '', category: '' }); // Add filters state
 
-    useEffect(() => {
-        const fetchCourses = async () => {
-            const data = await getCourses(filters);
-            setCourses(data);
-        };
-        fetchCourses();
-    }, [filters]);
-
-    const handleFilterChange = (e) => {
-        setFilters({ ...filters, [e.target.name]: e.target.value });
+  useEffect(() => {
+    const fetchCourses = async () => {
+      const data = await getCourses(filters); // Pass filters to getCourses
+      setCourses(data);
     };
+    fetchCourses();
+  }, [filters]); // Refetch courses whenever filters change
 
-    return (
-        <div>
-            <h1>강좌 목록</h1>
-            <div>
-                <input
-                    type="text"
-                    name="title"
-                    placeholder="강좌 제목 검색"
-                    value={filters.title}
-                    onChange={handleFilterChange}
-                />
-                <input
-                    type="text"
-                    name="category"
-                    placeholder="카테고리 필터"
-                    value={filters.category}
-                    onChange={handleFilterChange}
-                />
-            </div>
-            <ul>
-                {courses.map((course) => (
-                    <li key={course.id}>
-                        <h2>{course.title}</h2>
-                        <p>{course.description}</p>
-                        <p>카테고리: {course.category}</p>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
+  const handleFilterChange = (e) => {
+    setFilters({ ...filters, [e.target.name]: e.target.value });
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this course?')) {
+      await deleteCourse(id);
+      setCourses(courses.filter((course) => course.id !== id));
+    }
+  };
+
+  return (
+    <div>
+      <h1>Course List</h1>
+      {/* Filter Inputs */}
+      <div>
+        <label>
+          Title:
+          <input
+            type="text"
+            name="title"
+            value={filters.title}
+            onChange={handleFilterChange}
+            placeholder="Search by title"
+          />
+        </label>
+        <label>
+          Category:
+          <input
+            type="text"
+            name="category"
+            value={filters.category}
+            onChange={handleFilterChange}
+            placeholder="Filter by category"
+          />
+        </label>
+      </div>
+      {/* Course List */}
+      <CourseList courses={courses} onDelete={handleDelete} />
+    </div>
+  );
 }
 
 export default CourseListPage;
