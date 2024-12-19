@@ -5,6 +5,7 @@ from .serializers import CourseSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import CourseFilter
 from rest_framework.pagination import PageNumberPagination
+from .permissions import IsOwnerOrReadOnly
 
 class CustomPagination(PageNumberPagination):
     page_size = 10  
@@ -18,6 +19,7 @@ class CourseViewset(ReadOnlyModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = CourseFilter
     pagination_class = CustomPagination
+    permission_classes = [IsOwnerOrReadOnly] 
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
