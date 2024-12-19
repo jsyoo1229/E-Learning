@@ -54,7 +54,9 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'django_filters',
 
+    'categories',
     'courses',
+    'lessons', 
     'users'
 
 
