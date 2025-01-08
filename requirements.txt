@@ -1,6 +1,7 @@
 dj-rest-auth 
 Django 
 django-allauth 
+"django-allauth[socialaccount]"
 django-cors-headers 
 djangorestframework 
 djangorestframework-simplejwt 

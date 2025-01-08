@@ -1,6 +1,7 @@
 # lessons/models.py
 from django.db import models
 from courses.models import Course  # Link to Course
+from users.models import User
 
 class Lesson(models.Model):
     title = models.CharField(max_length=100)
